@@ -2,6 +2,7 @@ import Header from '../components/Header.jsx';
 import Hero from '../components/Hero.jsx';
 import Metrics from '../components/Metrics.jsx';
 import Services from '../components/Services.jsx';
+import Industries from '../components/Industries.jsx';
 import Process from '../components/Process.jsx';
 import CaseStudies from '../components/CaseStudies.jsx';
 import Testimonials from '../components/Testimonials.jsx';
@@ -16,6 +17,7 @@ function Home() {
         <Hero />
         <Metrics />
         <Services />
+        <Industries />
         <Process />
         <CaseStudies />
         <Testimonials />

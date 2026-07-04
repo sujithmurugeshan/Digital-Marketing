@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import logo from '../assets/logo.svg';
+import logo from '../assets/DM_logo.png';
 import { navItems } from '../data/siteData.js';
 
 function Header() {

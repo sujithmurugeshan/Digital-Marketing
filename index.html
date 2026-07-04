@@ -294,12 +294,64 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 .founder-card p{font-size:14.5px;color:var(--muted-dark);line-height:1.75;}
 
 /* ============ INDUSTRIES ============ */
-.pill-cloud{display:flex;flex-wrap:wrap;gap:12px;margin-top:50px;}
-.pill{
-  padding:12px 22px;border-radius:100px;border:1px solid var(--line-light);font-size:14px;color:var(--muted-light);
-  transition:all .3s var(--ease);cursor:none;
+.industries-section .container{width:min(1240px,92%);}
+.industries-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap;margin-bottom:48px;}
+.industries-head h2{font-size:clamp(34px,5vw,56px);max-width:640px;letter-spacing:0;}
+.industries-head h2 span{color:var(--blue-600);}
+.industries-head p{max-width:330px;color:var(--muted-light);font-size:16px;line-height:1.65;margin-bottom:6px;}
+.industries-head p strong{color:var(--ink);font-weight:700;}
+.industry-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px;}
+.industry-chip{
+  min-height:40px;padding:0 18px;border-radius:100px;border:1px solid var(--line-light);
+  background:var(--white);color:var(--muted-light);font-size:14px;font-weight:600;
+  transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),box-shadow .25s var(--ease);
 }
-.pill:hover{background:var(--navy-950);color:#fff;border-color:var(--navy-950);transform:translateY(-3px);}
+.industry-chip:hover,.industry-chip:focus-visible{color:var(--blue-600);border-color:var(--blue-600);}
+.industry-chip:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(30,79,255,.14);}
+.industry-chip.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+.industry-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+.industry-card{
+  position:relative;grid-column:span 2;min-height:150px;padding:26px 24px;border:1px solid var(--line-light);
+  border-radius:8px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;
+  opacity:0;transform:translateY(24px);
+  transition:border-color .35s var(--ease),box-shadow .35s var(--ease),opacity .4s var(--ease),transform .35s var(--ease),filter .35s var(--ease);
+}
+.industry-card.revealed{opacity:1;transform:translateY(0);}
+.industry-card.wide{grid-column:span 3;}
+.industry-card.hero{grid-column:span 2;grid-row:span 2;min-height:314px;background:var(--ink);border-color:var(--ink);color:#fff;}
+.industry-card.dimmed{opacity:.35!important;filter:saturate(.4);transform:translateY(0) scale(.97)!important;}
+.industry-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),rgba(30,79,255,.14),transparent 70%);
+  opacity:0;pointer-events:none;transition:opacity .3s var(--ease);
+}
+.industry-card.hero::before{background:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.1),transparent 70%);}
+.industry-card:hover::before{opacity:1;}
+.industry-card.revealed:not(.dimmed):hover{transform:translateY(-4px);border-color:var(--blue-600);box-shadow:0 16px 32px -20px rgba(30,79,255,.35);}
+.industry-card.hero.revealed:not(.dimmed):hover{border-color:var(--ink);box-shadow:0 16px 32px -20px rgba(5,7,15,.5);}
+.industry-card .index{
+  position:absolute;top:-6px;right:8px;z-index:0;font-family:var(--ff-display);font-size:64px;
+  font-weight:700;line-height:1;color:#eef1fb;user-select:none;transition:color .35s var(--ease);
+}
+.industry-card:hover .index{color:#dbe4ff;}
+.industry-card.hero .index{color:rgba(255,255,255,.07);}
+.industry-icon,.industry-copy,.industry-hero-copy{position:relative;z-index:1;}
+.industry-icon{
+  width:38px;height:38px;border-radius:8px;background:#dbe4ff;color:var(--blue-600);
+  display:flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease);
+}
+.industry-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.industry-card:hover .industry-icon{background:var(--blue-600);color:#fff;}
+.industry-card.hero .industry-icon{background:rgba(255,255,255,.12);color:#fff;}
+.industry-copy{margin-top:18px;}
+.industry-copy h3{font-size:19px;color:var(--ink);letter-spacing:0;margin:0;}
+.industry-copy p{font-size:13px;color:#8b98c4;line-height:1.45;margin-top:6px;}
+.industry-hero-copy{margin-top:auto;}
+.industry-counter-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.industry-counter{font-family:var(--ff-display);font-size:52px;font-weight:700;line-height:1;color:#dbe4ff;}
+.industry-counter-label{font-size:13px;color:#aab4dd;text-transform:uppercase;letter-spacing:0;font-weight:600;}
+.industry-headline{font-family:var(--ff-display);font-size:26px;font-weight:600;line-height:1.15;color:#fff;}
+.industry-headline span{color:#dbe4ff;}
 
 /* ============ MISSION VISION ============ */
 .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-dark);border:1px solid var(--line-dark);border-radius:20px;overflow:hidden;margin-top:60px;}
@@ -368,6 +420,10 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   .services-grid{grid-template-columns:repeat(2,1fr);}
   .process-track{grid-template-columns:repeat(2,1fr);row-gap:40px;}
   .process-track::before{display:none;}
+  .industries-head{align-items:flex-start;}
+  .industry-grid{grid-template-columns:repeat(2,1fr);}
+  .industry-card{grid-column:span 1;}
+  .industry-card.wide,.industry-card.hero{grid-column:span 2;grid-row:span 1;}
   .footer-top{grid-template-columns:1fr 1fr;row-gap:40px;}
 }
 @media (max-width:720px){
@@ -383,6 +439,12 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   .services-grid,.stat-card-grid{grid-template-columns:1fr;}
   .stat-card.blue{grid-column:span 1;}
   .process-track{grid-template-columns:1fr;}
+  .industries-head{gap:24px;margin-bottom:30px;}
+  .industry-filters{margin-bottom:28px;}
+  .industry-chip{flex:1 1 auto;}
+  .industry-grid{grid-template-columns:1fr;}
+  .industry-card,.industry-card.wide,.industry-card.hero{grid-column:1;}
+  .industry-card.hero{min-height:280px;}
   .mv-grid{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
   .hero-stats{grid-template-columns:1fr 1fr;}
@@ -421,6 +483,7 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
     <nav>
       <ul>
         <li><a href="#services">Services</a></li>
+        <li><a href="#industries">Industries</a></li>
         <li><a href="#why">Why Us</a></li>
         <li><a href="#process">Process</a></li>
         <li><a href="#about">About</a></li>
@@ -762,14 +825,51 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
 </section>
 
 <!-- ============ INDUSTRIES ============ -->
-<section class="section section-light">
+<section class="section section-light industries-section" id="industries">
   <div class="container">
-    <div class="reveal">
-      <div class="eyebrow">Industries we serve</div>
-      <h2 style="font-size:clamp(28px,3.6vw,42px);max-width:520px;">Growth strategies tuned to your market.</h2>
+    <div class="industries-head reveal">
+      <div>
+        <div class="eyebrow">Industries We Serve</div>
+        <h2>One agency.<br><span>Fourteen markets</span> we already speak the language of.</h2>
+      </div>
+      <p>Every industry moves differently. <strong>We tune the strategy</strong>, not the other way around.</p>
     </div>
-    <div class="pill-cloud reveal reveal-delay-1">
-      <span class="pill">Healthcare</span><span class="pill">Education</span><span class="pill">Real Estate</span><span class="pill">Fashion &amp; Apparel</span><span class="pill">Beauty &amp; Cosmetics</span><span class="pill">Restaurants &amp; Cafés</span><span class="pill">Construction</span><span class="pill">Manufacturing</span><span class="pill">Finance</span><span class="pill">Travel &amp; Tourism</span><span class="pill">E-commerce</span><span class="pill">Personal Brands</span><span class="pill">Startups</span><span class="pill">Small &amp; Medium Businesses</span>
+
+    <div class="industry-filters" id="industryFilters">
+      <button class="industry-chip active" type="button" data-filter="all" aria-pressed="true">All industries</button>
+      <button class="industry-chip" type="button" data-filter="b2b" aria-pressed="false">B2B</button>
+      <button class="industry-chip" type="button" data-filter="d2c" aria-pressed="false">D2C</button>
+      <button class="industry-chip" type="button" data-filter="local" aria-pressed="false">Local</button>
+      <button class="industry-chip" type="button" data-filter="digital" aria-pressed="false">Digital-first</button>
+    </div>
+
+    <div class="industry-grid" id="industryGrid">
+      <div class="industry-card hero" data-cat="all">
+        <div class="index">14</div>
+        <div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></svg></div>
+        <div class="industry-hero-copy">
+          <div class="industry-counter-row">
+            <span class="industry-counter" data-industry-counter data-target="14">0</span>
+            <span class="industry-counter-label">Industries served</span>
+          </div>
+          <div class="industry-headline">Different markets<span>.</span><br>Same obsession<span>:</span> growth.</div>
+        </div>
+      </div>
+
+      <div class="industry-card" data-cat="local"><div class="index">01</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 9h4l1.5-3 2 6 1.5-3h5"/></svg></div><div class="industry-copy"><h3>Healthcare</h3><p>Trust-first messaging</p></div></div>
+      <div class="industry-card" data-cat="local d2c"><div class="index">02</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div class="industry-copy"><h3>Education</h3><p>Enrollment funnels</p></div></div>
+      <div class="industry-card wide" data-cat="local b2b"><div class="index">03</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21V13h6v8"/></svg></div><div class="industry-copy"><h3>Real Estate</h3><p>Listings that convert leads, not just views</p></div></div>
+      <div class="industry-card" data-cat="d2c digital"><div class="index">04</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z"/></svg></div><div class="industry-copy"><h3>Fashion &amp; Apparel</h3><p>Drop-driven hype</p></div></div>
+      <div class="industry-card" data-cat="d2c digital"><div class="index">05</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg></div><div class="industry-copy"><h3>Beauty &amp; Cosmetics</h3><p>UGC and influencer play</p></div></div>
+      <div class="industry-card" data-cat="local"><div class="index">06</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div><div class="industry-copy"><h3>Restaurants &amp; Cafes</h3><p>Local discovery</p></div></div>
+      <div class="industry-card wide" data-cat="b2b"><div class="index">07</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1 8 8 0 0 0-16 0"/><path d="M10 10V4a2 2 0 1 1 4 0v6"/><path d="M4 15v-3a6 6 0 0 1 6-6"/><path d="M14 6a6 6 0 0 1 6 6v3"/></svg></div><div class="industry-copy"><h3>Construction</h3><p>B2B lead pipelines that don't rely on referrals alone</p></div></div>
+      <div class="industry-card" data-cat="b2b"><div class="index">08</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M2 20a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V9l-6 4V9l-6 4V9l-6 4v7Z"/><path d="M17 18h1M12 18h1M7 18h1"/></svg></div><div class="industry-copy"><h3>Manufacturing</h3><p>Trade and export reach</p></div></div>
+      <div class="industry-card" data-cat="b2b local"><div class="index">09</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 22h18"/><path d="M6 18v-7M10 18v-7M14 18v-7M18 18v-7"/><path d="M12 2 3 7h18Z"/></svg></div><div class="industry-copy"><h3>Finance</h3><p>Compliant, still bold</p></div></div>
+      <div class="industry-card" data-cat="d2c digital"><div class="index">10</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-1 .1-1.3.5l-.5.6c-.4.5-.2 1.2.4 1.4L9 11l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2"/></svg></div><div class="industry-copy"><h3>Travel &amp; Tourism</h3><p>Seasonal booking spikes</p></div></div>
+      <div class="industry-card wide" data-cat="d2c digital"><div class="index">11</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M8 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM19 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/><path d="M2.5 3h2l2.4 12.4a2 2 0 0 0 2 1.6h9.2a2 2 0 0 0 2-1.6L22 6H6"/></svg></div><div class="industry-copy"><h3>E-commerce</h3><p>Cart-recovery and performance ads that pay for themselves</p></div></div>
+      <div class="industry-card" data-cat="digital"><div class="index">12</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><path d="M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></div><div class="industry-copy"><h3>Personal Brands</h3><p>Face-first content</p></div></div>
+      <div class="industry-card" data-cat="b2b digital"><div class="index">13</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div><div class="industry-copy"><h3>Startups</h3><p>Zero-to-one traction</p></div></div>
+      <div class="industry-card" data-cat="local b2b"><div class="index">14</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M2 7h20"/><path d="M2 7l1.5 4.5A2 2 0 0 0 5.4 13H8a2 2 0 0 0 2-2v-.5"/><path d="M8 7V4h8v3"/><path d="M14 7v3.5a2 2 0 0 0 2 2h2.6a2 2 0 0 0 1.9-1.5L22 7"/><path d="M4 13v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/></svg></div><div class="industry-copy"><h3>Small &amp; Medium Businesses</h3><p>Lean budgets, real ROI</p></div></div>
     </div>
   </div>
 </section>
@@ -902,7 +1002,7 @@ function loopCursor(){
   requestAnimationFrame(loopCursor);
 }
 loopCursor();
-document.querySelectorAll('a,button,.pill,.service-card').forEach(el=>{
+document.querySelectorAll('a,button,.industry-card,.service-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.classList.add('active'));
   el.addEventListener('mouseleave',()=>ring.classList.remove('active'));
 });
@@ -921,6 +1021,79 @@ const io=new IntersectionObserver(entries=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 },{threshold:0.15});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// ---------- Industries interactions ----------
+document.querySelectorAll('.industry-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const rect=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-rect.left)+'px');
+    card.style.setProperty('--my',(e.clientY-rect.top)+'px');
+  });
+});
+
+const industryCards=Array.from(document.querySelectorAll('.industry-card'));
+industryCards.forEach((card,i)=>{
+  card.style.transitionDelay=((i%8)*60)+'ms';
+});
+
+const industryRevealObserver=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('revealed');
+      setTimeout(()=>entry.target.style.transitionDelay='0ms',900);
+      industryRevealObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:.15});
+industryCards.forEach(card=>industryRevealObserver.observe(card));
+
+const industryCounter=document.querySelector('[data-industry-counter]');
+const industryHero=document.querySelector('.industry-card.hero');
+let industryCounted=false;
+
+function animateIndustryCounter(target){
+  const duration=1200;
+  const start=performance.now();
+  const tick=now=>{
+    const progress=Math.min((now-start)/duration,1);
+    const eased=1-Math.pow(1-progress,3);
+    industryCounter.textContent=Math.round(eased*target);
+    if(progress<1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+if(industryCounter&&industryHero){
+  const industryCounterObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting&&!industryCounted){
+        industryCounted=true;
+        animateIndustryCounter(parseInt(industryCounter.dataset.target,10));
+        industryCounterObserver.unobserve(entry.target);
+      }
+    });
+  },{threshold:.4});
+  industryCounterObserver.observe(industryHero);
+}
+
+const industryChips=document.querySelectorAll('.industry-chip');
+const filteredIndustryCards=document.querySelectorAll('.industry-card:not(.hero)');
+industryChips.forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    industryChips.forEach(item=>{
+      item.classList.remove('active');
+      item.setAttribute('aria-pressed','false');
+    });
+    chip.classList.add('active');
+    chip.setAttribute('aria-pressed','true');
+    const filter=chip.dataset.filter;
+
+    filteredIndustryCards.forEach(card=>{
+      const cats=card.dataset.cat.split(' ');
+      card.classList.toggle('dimmed',filter!=='all'&&!cats.includes(filter));
+    });
+  });
+});
 
 // ---------- Counters ----------
 function animateCounters(){

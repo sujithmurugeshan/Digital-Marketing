@@ -1,17 +1,31 @@
 import {
   BarChart3,
   BrainCircuit,
+  BriefcaseBusiness,
+  Factory,
+  GraduationCap,
+  HardHat,
+  HeartPulse,
+  House,
+  Landmark,
   MailCheck,
   Megaphone,
   MousePointerClick,
+  Plane,
+  Rocket,
   Search,
   ShieldCheck,
+  Shirt,
+  ShoppingCart,
   Sparkles,
   Target,
+  UserRound,
+  Utensils,
 } from 'lucide-react';
 
 export const navItems = [
   { label: 'Services', href: '#services' },
+  { label: 'Industries', href: '#industries' },
   { label: 'Process', href: '#process' },
   { label: 'Results', href: '#results' },
   { label: 'Contact', href: '#contact' },
@@ -59,6 +73,104 @@ export const services = [
     description:
       'Landing pages and experiments focused on clearer offers, faster decisions, and more booked calls.',
     icon: Target,
+  },
+];
+
+export const industryFilters = [
+  { label: 'All industries', value: 'all' },
+  { label: 'B2B', value: 'b2b' },
+  { label: 'D2C', value: 'd2c' },
+  { label: 'Local', value: 'local' },
+  { label: 'Digital-first', value: 'digital' },
+];
+
+export const industries = [
+  {
+    title: 'Healthcare',
+    tag: 'Trust-first messaging',
+    categories: ['local'],
+    icon: HeartPulse,
+  },
+  {
+    title: 'Education',
+    tag: 'Enrollment funnels',
+    categories: ['local', 'd2c'],
+    icon: GraduationCap,
+  },
+  {
+    title: 'Real Estate',
+    tag: 'Listings that convert leads, not just views',
+    categories: ['local', 'b2b'],
+    icon: House,
+    wide: true,
+  },
+  {
+    title: 'Fashion & Apparel',
+    tag: 'Drop-driven hype',
+    categories: ['d2c', 'digital'],
+    icon: Shirt,
+  },
+  {
+    title: 'Beauty & Cosmetics',
+    tag: 'UGC and influencer play',
+    categories: ['d2c', 'digital'],
+    icon: Sparkles,
+  },
+  {
+    title: 'Restaurants & Cafes',
+    tag: 'Local discovery',
+    categories: ['local'],
+    icon: Utensils,
+  },
+  {
+    title: 'Construction',
+    tag: "B2B lead pipelines that don't rely on referrals alone",
+    categories: ['b2b'],
+    icon: HardHat,
+    wide: true,
+  },
+  {
+    title: 'Manufacturing',
+    tag: 'Trade and export reach',
+    categories: ['b2b'],
+    icon: Factory,
+  },
+  {
+    title: 'Finance',
+    tag: 'Compliant, still bold',
+    categories: ['b2b', 'local'],
+    icon: Landmark,
+  },
+  {
+    title: 'Travel & Tourism',
+    tag: 'Seasonal booking spikes',
+    categories: ['d2c', 'digital'],
+    icon: Plane,
+  },
+  {
+    title: 'E-commerce',
+    tag: 'Cart-recovery and performance ads that pay for themselves',
+    categories: ['d2c', 'digital'],
+    icon: ShoppingCart,
+    wide: true,
+  },
+  {
+    title: 'Personal Brands',
+    tag: 'Face-first content',
+    categories: ['digital'],
+    icon: UserRound,
+  },
+  {
+    title: 'Startups',
+    tag: 'Zero-to-one traction',
+    categories: ['b2b', 'digital'],
+    icon: Rocket,
+  },
+  {
+    title: 'Small & Medium Businesses',
+    tag: 'Lean budgets, real ROI',
+    categories: ['local', 'b2b'],
+    icon: BriefcaseBusiness,
   },
 ];
 
