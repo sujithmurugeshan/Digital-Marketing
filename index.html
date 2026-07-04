@@ -653,15 +653,19 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
       </div>
 
       <div class="form-card reveal reveal-delay-2">
-        <div class="form-row">
-          <div class="field"><label>Full name</label><input type="text" placeholder="Your name"></div>
-          <div class="field"><label>Phone</label><input type="tel" placeholder="+91"></div>
-        </div>
-        <div class="field"><label>Email</label><input type="email" placeholder="you@company.com"></div>
-        <div class="field"><label>Tell us about your business &amp; goals</label><textarea placeholder="What are you looking to grow?"></textarea></div>
-        <button class="btn-primary submit-btn" type="button" onclick="alert('Thanks! We will get back to you shortly.')">Send Message
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M7 7h10v10"/></svg>
-        </button>
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="field"><label>Full name</label><input type="text" id="fullName" placeholder="Your name" required></div>
+            <div class="field"><label>Phone</label><input type="tel" id="phone" placeholder="+91" required></div>
+          </div>
+          <div class="field"><label>Email</label><input type="email" id="email" placeholder="you@company.com" required></div>
+          <div class="field"><label>Tell us about your business &amp; goals</label><textarea id="message" placeholder="What are you looking to grow?" required></textarea></div>
+          <button class="btn-primary submit-btn" type="submit">
+            <span id="buttonText">Send Message</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </button>
+          <div id="statusMessage" style="margin-top:12px;font-size:14px;text-align:center;display:none;"></div>
+        </form>
       </div>
     </div>
   </div>
@@ -782,6 +786,68 @@ document.getElementById('burger').addEventListener('click',()=>{
   const open = navUl.style.display==='flex';
   navUl.style.cssText = open ? '' : 'display:flex;flex-direction:column;position:fixed;top:70px;right:20px;background:#0a1230;border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:20px 26px;gap:18px;z-index:950;';
   navCta.style.display = open ? '' : 'inline-flex';
+});
+
+// ---------- Contact Form Handler ----------
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const fullName = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const message = document.getElementById('message').value.trim();
+  const statusMessage = document.getElementById('statusMessage');
+  const buttonText = document.getElementById('buttonText');
+  const submitBtn = document.querySelector('.submit-btn');
+
+  if (!fullName || !email || !phone || !message) {
+    showStatus('Please fill in all fields', 'error');
+    return;
+  }
+
+  // Disable button and show loading state
+  submitBtn.disabled = true;
+  buttonText.textContent = 'Sending...';
+
+  try {
+    const response = await fetch('http://localhost:3001/api/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: fullName,
+        email: email,
+        phone: phone,
+        message: message,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      showStatus('✅ ' + data.message, 'success');
+      document.getElementById('contactForm').reset();
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 5000);
+    } else {
+      showStatus('❌ ' + (data.message || 'Failed to send message'), 'error');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    showStatus('❌ Network error. Make sure the server is running on port 3001', 'error');
+  } finally {
+    submitBtn.disabled = false;
+    buttonText.textContent = 'Send Message';
+  }
+
+  function showStatus(message, type) {
+    statusMessage.textContent = message;
+    statusMessage.style.display = 'block';
+    statusMessage.style.color = type === 'success' ? '#3766ff' : '#ff4d4d';
+    statusMessage.style.fontWeight = '500';
+  }
 });
 </script>
 </body>
