@@ -1,0 +1,6 @@
+<svg width="180" height="44" viewBox="0 0 180 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="42" height="42" rx="8" fill="#0D1B2A"/>
+  <path d="M10 28.5L18.7 15.5L25.5 24L34 11.5" stroke="#19C6A7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33.8 11.5V21.5H24" stroke="#F5C542" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="54" y="27.5" fill="#0D1B2A" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="800">LaunchWave</text>
+</svg>
