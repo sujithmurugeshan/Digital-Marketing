@@ -539,7 +539,7 @@ button {
 }
 
 .industry-card--wide {
-  grid-column: span 3;
+  grid-column: span 4;
 }
 
 .industry-card--hero {
@@ -965,10 +965,13 @@ button {
     grid-column: span 1;
   }
 
-  .industry-card--wide,
   .industry-card--hero {
     grid-column: span 2;
     grid-row: span 1;
+  }
+
+  .industry-card--wide {
+    grid-column: span 1;
   }
 
   .process-visual {

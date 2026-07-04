@@ -152,7 +152,6 @@ export const industries = [
     tag: 'Cart-recovery and performance ads that pay for themselves',
     categories: ['d2c', 'digital'],
     icon: ShoppingCart,
-    wide: true,
   },
   {
     title: 'Personal Brands',
