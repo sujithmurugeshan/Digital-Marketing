@@ -14,6 +14,7 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const emailLogin = process.env.EMAIL_LOGIN || process.env.EMAIL_USER;
 
 // Middleware
 app.use(cors());
@@ -27,13 +28,15 @@ app.get('/', (req, res) => {
 
 // Email transporter configuration
 const emailTransporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
+  port: Number(process.env.EMAIL_PORT || 587),
+  secure: process.env.EMAIL_SECURE === 'true',
   auth: {
-    user: process.env.EMAIL_USER,
+    user: emailLogin,
     pass: process.env.EMAIL_PASSWORD,
   },
   tls: {
-    rejectUnauthorized: false,
+    rejectUnauthorized: process.env.EMAIL_TLS_REJECT_UNAUTHORIZED === 'true',
   },
 });
 
@@ -89,22 +92,27 @@ app.post('/api/contact', async (req, res) => {
       }
     }
 
-    // Send confirmation email to user
-    await emailTransporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Thanks for reaching out to Akshu Medias',
-      html: `
-        <h2>Hello ${name},</h2>
-        <p>Thank you for getting in touch with Akshu Medias! We've received your message and will get back to you shortly.</p>
-        <p>In the meantime, feel free to reach us at:</p>
-        <ul>
-          <li>📞 Phone: +91 99946 27016</li>
-          <li>📧 Email: akshumedias@gmail.com</li>
-        </ul>
-        <p>Best regards,<br>Akshu Medias Team</p>
-      `,
-    });
+    // Send confirmation email to user. Do not fail the lead if this optional
+    // autoresponder is rejected by the recipient's server.
+    try {
+      await emailTransporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Thanks for reaching out to Akshu Medias',
+        html: `
+          <h2>Hello ${name},</h2>
+          <p>Thank you for getting in touch with Akshu Medias! We've received your message and will get back to you shortly.</p>
+          <p>In the meantime, feel free to reach us at:</p>
+          <ul>
+            <li>📞 Phone: +91 99946 27016</li>
+            <li>📧 Email: akshumedias@gmail.com</li>
+          </ul>
+          <p>Best regards,<br>Akshu Medias Team</p>
+        `,
+      });
+    } catch (confirmationError) {
+      console.log('Confirmation email failed:', confirmationError.message);
+    }
 
     res.status(200).json({ 
       success: true, 
@@ -113,9 +121,14 @@ app.post('/api/contact', async (req, res) => {
 
   } catch (error) {
     console.error('Error processing contact form:', error);
+
+    const isEmailAuthError = error.code === 'EAUTH' || error.responseCode === 535;
+
     res.status(500).json({ 
       success: false, 
-      message: 'An error occurred while processing your request. Please try again.' 
+      message: isEmailAuthError
+        ? 'Email authentication failed. Please check the Brevo SMTP login and key.'
+        : 'An error occurred while processing your request. Please try again.'
     });
   }
 });
@@ -129,6 +142,7 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Server running at http://localhost:${PORT}`);
   console.log(`📧 Email: ${process.env.EMAIL_USER || 'Not configured'}`);
+  console.log(`🔐 SMTP Login: ${emailLogin ? 'Configured' : 'Not configured'}`);
   console.log(`📱 WhatsApp: ${twilioClient ? process.env.RECIPIENT_WHATSAPP_NUMBER : 'Not configured'}`);
-  console.log('\n⚠️  Important: Update .env file with your Gmail App Password and Twilio credentials');
+  console.log('\n⚠️  Important: Update .env file with your Brevo SMTP key and Twilio credentials');
 });
