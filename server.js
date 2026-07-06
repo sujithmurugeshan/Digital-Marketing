@@ -51,10 +51,10 @@ if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_ACCOUNT_SID.startsWith(
 
 // Contact form endpoint
 app.post('/api/contact', async (req, res) => {
-  const { name, email, phone, message } = req.body;
+  const { name, email, phone, industry, message } = req.body;
 
   // Validate input
-  if (!name || !email || !phone || !message) {
+  if (!name || !email || !phone || !industry || !message) {
     return res.status(400).json({ 
       success: false, 
       message: 'All fields are required.' 
@@ -72,6 +72,7 @@ app.post('/api/contact', async (req, res) => {
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Industry:</strong> ${industry}</p>
         <p><strong>Message:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
         <hr>
@@ -85,7 +86,7 @@ app.post('/api/contact', async (req, res) => {
         await twilioClient.messages.create({
           from: process.env.TWILIO_WHATSAPP_NUMBER,
           to: process.env.RECIPIENT_WHATSAPP_NUMBER,
-          body: `📨 New Contact Form Submission\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMessage: ${message}`,
+          body: `New Contact Form Submission\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nIndustry: ${industry}\n\nMessage: ${message}`,
         });
       } catch (whatsappError) {
         console.log('WhatsApp notification failed:', whatsappError.message);

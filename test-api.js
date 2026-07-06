@@ -4,6 +4,7 @@ const postData = JSON.stringify({
   name: 'Sujith Test',
   email: 'sujith@akshumedias.com',
   phone: '9994627016',
+  industry: 'Healthcare',
   message: 'Testing email and WhatsApp integration'
 });
 
