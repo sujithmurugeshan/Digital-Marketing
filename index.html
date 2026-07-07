@@ -444,7 +444,7 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   background: var(--white);
   border: 1px solid var(--fog-2);
   border-radius: 24px;
-  padding: 48px 36px 40px 36px;
+  padding: 28px 28px 36px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -470,6 +470,34 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   text-transform: uppercase;
   white-space: nowrap;
 }
+.pricing-visual {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 26px;
+  border: 1px solid rgba(10, 18, 48, 0.08);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--fog-2);
+  box-shadow: 0 18px 34px -28px rgba(5, 7, 15, 0.45);
+}
+.pricing-visual img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.55s var(--ease);
+}
+.pricing-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 52%, rgba(5, 7, 15, 0.28));
+  pointer-events: none;
+}
+.pricing-card.popular .pricing-visual {
+  border-color: rgba(124, 77, 255, 0.32);
+  box-shadow: 0 22px 40px -26px rgba(124, 77, 255, 0.7);
+}
 .pricing-card h3 {
   font-family: var(--ff-display);
   font-size: 24px;
@@ -484,23 +512,6 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   margin-bottom: 28px;
   min-height: 42px;
   text-align: left;
-}
-.pricing-price {
-  font-family: var(--ff-display);
-  font-size: 48px;
-  font-weight: 700;
-  color: var(--ink);
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  margin-bottom: 32px;
-  border-bottom: 1px solid var(--fog-2);
-  padding-bottom: 24px;
-}
-.pricing-price span {
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--muted-light);
 }
 .pricing-features {
   display: flex;
@@ -567,6 +578,9 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   transform: translateY(-6px);
   box-shadow: 0 24px 48px -15px rgba(5, 7, 15, 0.1);
 }
+.pricing-card:hover .pricing-visual img {
+  transform: scale(1.055);
+}
 .pricing-card.popular:hover {
   box-shadow: 0 24px 48px -15px rgba(124, 77, 255, 0.25);
 }
@@ -615,6 +629,8 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   .footer-top{grid-template-columns:1fr;}
   .pricing-grid{grid-template-columns:1fr;}
   .pricing-card.enterprise{grid-column:span 1;}
+  .pricing-card{padding:24px 22px 32px;}
+  .pricing-visual{border-radius:16px;margin-bottom:22px;}
 }
 </style>
 </head>
@@ -1110,9 +1126,11 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
     <div class="pricing-grid">
       <!-- Starter Card -->
       <div class="pricing-card reveal">
+        <div class="pricing-visual">
+          <img src="src/assets/pricing-starter.png" alt="Small startup team reviewing marketing analytics" loading="lazy" decoding="async">
+        </div>
         <h3>Starter</h3>
         <p class="pricing-desc">Ideal for local setups seeking core optimization.</p>
-        <div class="pricing-price">$1,499<span>/mo</span></div>
         
         <div class="pricing-features">
           <div class="pricing-feat-item">
@@ -1143,9 +1161,11 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
       <!-- Professional Card (Popular) -->
       <div class="pricing-card popular reveal">
         <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-visual">
+          <img src="src/assets/pricing-professional.png" alt="Growth marketing team analyzing campaign dashboards" loading="lazy" decoding="async">
+        </div>
         <h3>Professional</h3>
         <p class="pricing-desc">Complete scale suite for growing companies.</p>
-        <div class="pricing-price">$2,999<span>/mo</span></div>
         
         <div class="pricing-features">
           <div class="pricing-feat-item">
@@ -1175,9 +1195,11 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
 
       <!-- Enterprise Card -->
       <div class="pricing-card enterprise reveal">
+        <div class="pricing-visual">
+          <img src="src/assets/pricing-enterprise.png" alt="Enterprise strategy team planning an omni-channel campaign" loading="lazy" decoding="async">
+        </div>
         <h3>Enterprise</h3>
         <p class="pricing-desc">Full-scale omni-channel support &amp; fractional CMO.</p>
-        <div class="pricing-price">Custom</div>
         
         <div class="pricing-features">
           <div class="pricing-feat-item">
