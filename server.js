@@ -106,7 +106,7 @@ app.post('/api/contact', async (req, res) => {
           <p>In the meantime, feel free to reach us at:</p>
           <ul>
             <li>📞 Phone: +91 99946 27016</li>
-            <li>📧 Email: akshumedias@gmail.com</li>
+            <li>📧 Email: ${process.env.EMAIL_USER}</li>
           </ul>
           <p>Best regards,<br>Akshu Medias Team</p>
         `,

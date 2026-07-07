@@ -2,7 +2,7 @@
 
 ## Overview
 The contact form on your website now sends:
-- ✅ **Email** to akshumedias@gmail.com
+- ✅ **Email** to the address configured in `EMAIL_USER`
 - ✅ **WhatsApp** notification to +91 99946 27016
 
 ## Quick Start
@@ -20,22 +20,24 @@ Open `http://localhost:3001` in your browser and test the contact form.
 
 ## Configuration
 
-### 📧 Gmail Setup (Required for Emails)
+### 📧 Brevo SMTP Setup (Required for Emails)
 
-1. **Enable 2-Step Verification** on your Google Account:
-   - Go to [myaccount.google.com](https://myaccount.google.com)
-   - Click "Security" in the left menu
-   - Enable 2-Step Verification
+1. **Open Brevo SMTP settings**:
+   - Go to Brevo > SMTP & API > SMTP
 
-2. **Generate App Password**:
-   - Go to [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
-   - Select "Mail" and "Windows Computer" (or your device)
-   - Copy the 16-character password
+2. **Copy SMTP credentials**:
+   - SMTP server: `smtp-relay.brevo.com`
+   - Port: `587`
+   - Login: your Brevo SMTP login
+   - Key: your Brevo SMTP key
 
 3. **Update .env file**:
    ```
-   EMAIL_USER=akshumedias@gmail.com
-   EMAIL_PASSWORD=xxxx xxxx xxxx xxxx
+   EMAIL_USER=your_verified_sender_email@gmail.com
+   EMAIL_LOGIN=your_brevo_smtp_login
+   EMAIL_HOST=smtp-relay.brevo.com
+   EMAIL_PORT=587
+   EMAIL_PASSWORD=your_brevo_smtp_key
    ```
 
 ### 📱 Twilio Setup (Optional for WhatsApp)
@@ -68,9 +70,12 @@ Open `http://localhost:3001` in your browser and test the contact form.
 ## Environment Variables (.env)
 
 ```env
-# Email (Gmail)
+# Email (Brevo SMTP)
 EMAIL_USER=your_email@gmail.com
-EMAIL_PASSWORD=your_app_password
+EMAIL_LOGIN=your_brevo_smtp_login
+EMAIL_HOST=smtp-relay.brevo.com
+EMAIL_PORT=587
+EMAIL_PASSWORD=your_brevo_smtp_key
 
 # WhatsApp (Twilio)
 TWILIO_ACCOUNT_SID=your_sid
@@ -89,7 +94,7 @@ PORT=3001
 1. User fills contact form on website
 2. Form submits to `/api/contact` endpoint
 3. Server validates data
-4. Sends **email** to akshumedias@gmail.com
+4. Sends **email** to the address configured in `EMAIL_USER`
 5. Sends **WhatsApp** message to +91 99946 27016
 6. Sends **confirmation email** to user
 7. Returns success message to user
@@ -103,9 +108,9 @@ PORT=3001
 - Make sure you're accessing `http://localhost:3001` (not a different port)
 
 ### "Email not sending"
-- Verify Gmail App Password is correct in .env
-- Check that 2-Step Verification is enabled
-- Wait a few seconds - Gmail can be slow sometimes
+- Verify the Brevo SMTP login and key are from the same Brevo account
+- Make sure `EMAIL_USER` is a verified sender in Brevo
+- Restart the backend after changing `.env`
 
 ### "WhatsApp not sending"
 - Twilio is optional - set up only if needed
