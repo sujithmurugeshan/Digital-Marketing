@@ -231,20 +231,32 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 .services-head{text-align:center;max-width:800px;margin:0 auto 60px auto;display:flex;flex-direction:column;align-items:center;gap:16px;}
 .services-head h2{font-size:clamp(30px,4vw,48px);max-width:700px;margin:0;}
 .services-head p{max-width:600px;color:var(--muted-light);font-size:15.5px;line-height:1.7;margin:0;}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-light);border:1px solid var(--line-light);border-radius:18px;overflow:hidden;}
-.service-card{
-  background:var(--white);padding:45px 30px;position:relative;transition:background .4s var(--ease), transform .4s var(--ease);
-  min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px;
+.service-posters{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;max-width:1180px;margin:0 auto;}
+.service-poster{
+  position:relative;display:block;flex:0 0 calc((100% - 150px)/6);aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:transparent;
+  box-shadow:0 16px 34px -30px rgba(5,7,15,.5);
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  transform-style:preserve-3d;will-change:transform;
 }
-.service-card:hover{background:var(--navy-950);}
-.service-card:hover .svc-title{color:#fff;}
-.service-card:hover .svc-icon{color:var(--blue-400);transform:scale(1.08);}
-.svc-icon{
-  width:44px;height:44px;color:var(--muted-light);transition:color .4s var(--ease), transform .4s var(--ease);
-  display:flex;align-items:center;justify-content:center;
+.service-poster img{width:100%;height:100%;object-fit:cover;transform:scale(1.015);transition:transform .5s var(--ease);}
+.service-poster::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,transparent 18%,rgba(255,255,255,.38) 48%,transparent 78%);
+  transform:translateX(-130%) skewX(-14deg);transition:transform .7s var(--ease);
 }
-.svc-icon svg{width:100%;height:100%;}
-.svc-title{font-family:var(--ff-display);font-size:18px;font-weight:600;color:var(--ink);transition:color .4s;line-height:1.3;}
+.service-poster:hover{transform:translateY(-7px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg));box-shadow:0 24px 46px -32px rgba(5,7,15,.62);transition-delay:0s;}
+.service-poster:hover img{transform:scale(1.045);}
+.service-poster:hover::after{transform:translateX(130%) skewX(-14deg);}
+.service-poster:nth-child(3n+1){transition-delay:.02s;}
+.service-poster:nth-child(3n+2){transition-delay:.06s;}
+.service-poster:nth-child(3n){transition-delay:.1s;}
+.service-poster:nth-child(3n+1):hover,.service-poster:nth-child(3n+2):hover,.service-poster:nth-child(3n):hover{transition-delay:0s;}
+@media (prefers-reduced-motion:reduce){
+  .service-poster,.service-poster img,.service-poster::after{transition:none;}
+  .service-poster:hover{transform:none;}
+  .service-poster:hover img{transform:scale(1.015);}
+  .service-poster:hover::after{transform:translateX(-130%) skewX(-14deg);}
+}
 
 /* ============ WHY / STATS SPLIT ============ */
 .why-wrap{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
@@ -313,10 +325,11 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 .industry-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
 .industry-card{
   position:relative;grid-column:span 2;min-height:150px;padding:26px 24px;border:1px solid var(--line-light);
-  border-radius:8px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;
+  border-radius:8px;background:var(--white);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;
   opacity:0;transform:translateY(24px);
   transition:border-color .35s var(--ease),box-shadow .35s var(--ease),opacity .4s var(--ease),transform .35s var(--ease),filter .35s var(--ease);
 }
+.industry-card.hero{cursor:default;}
 .industry-card.revealed{opacity:1;transform:translateY(0);}
 .industry-card.wide{grid-column:span 4;}
 .industry-card.hero{grid-column:span 2;grid-row:span 2;min-height:314px;background:var(--ink);border-color:var(--ink);color:#fff;}
@@ -336,6 +349,16 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 }
 .industry-card:hover .index{color:#dbe4ff;}
 .industry-card.hero .index{color:rgba(255,255,255,.07);}
+.industry-card.healthcare-card{
+  background:
+    linear-gradient(90deg,rgba(5,7,15,.72),rgba(5,7,15,.32)),
+    url('src/assets/health care.jpg') center right/cover no-repeat;
+  border-color:rgba(255,255,255,.14);color:#fff;
+}
+.industry-card.healthcare-card .index{color:rgba(255,255,255,.12);}
+.industry-card.healthcare-card .industry-icon{background:rgba(255,255,255,.16);color:#fff;}
+.industry-card.healthcare-card .industry-copy h3{color:#fff;}
+.industry-card.healthcare-card .industry-copy p{color:rgba(255,255,255,.78);}
 .industry-icon,.industry-copy,.industry-hero-copy{position:relative;z-index:1;}
 .industry-icon{
   width:38px;height:38px;border-radius:8px;background:#dbe4ff;color:var(--blue-600);
@@ -357,23 +380,26 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 /* ============ MISSION VISION ============ */
 .mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-dark);border:1px solid var(--line-dark);border-radius:20px;overflow:hidden;margin-top:60px;}
 .mv-card{background:var(--navy-900);padding:44px;}
-.mv-card .eyebrow{margin-bottom:22px;}
+.mv-card .eyebrow{margin-bottom:22px;font-size:15px;font-weight:700;}
 .mv-card p{font-size:16.5px;line-height:1.75;color:var(--muted-dark);font-family:var(--ff-display);font-weight:400;}
 
 /* ============ CTA BAND ============ */
 .cta-band{
   position:relative;border-radius:28px;overflow:hidden;padding:90px 60px;text-align:center;
-  background:linear-gradient(135deg,var(--blue-600),#0e2a91 70%);
+  background:
+    linear-gradient(135deg,rgba(5,7,15,.72),rgba(14,42,145,.6)),
+    url('src/assets/BG_POSTER.jpg') center/cover no-repeat;
   margin-inline:auto;width:min(1180px,92%);
+  isolation:isolate;
 }
 .cta-band::before{
-  content:'';position:absolute;inset:0;
+  content:'';position:absolute;inset:0;z-index:0;
   background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
   background-size:48px 48px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent 80%);
 }
-.cta-band h2{position:relative;font-size:clamp(30px,4.6vw,54px);color:#fff;max-width:720px;margin-inline:auto;}
-.cta-band p{position:relative;color:rgba(255,255,255,.82);margin-top:18px;font-size:16px;}
-.cta-band .btn-primary{position:relative;background:#fff;color:var(--blue-600);margin-top:36px;}
+.cta-band h2{position:relative;z-index:1;font-size:clamp(30px,4.6vw,54px);color:#fff;max-width:720px;margin-inline:auto;}
+.cta-band p{position:relative;z-index:1;color:rgba(255,255,255,.82);margin-top:18px;font-size:16px;}
+.cta-band .btn-primary{position:relative;z-index:1;background:#fff;color:var(--blue-600);margin-top:36px;}
 .cta-band .btn-primary:hover{background:var(--fog);}
 
 /* ============ CONTACT ============ */
@@ -389,11 +415,17 @@ h1.hero-h .accent{color:var(--blue-400);font-style:italic;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .field{margin-bottom:20px;}
 .field label{display:block;font-family:var(--ff-mono);font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted-dark);margin-bottom:10px;}
-.field input,.field textarea{
+.field input,.field textarea,.field select{
   width:100%;background:rgba(255,255,255,.03);border:1px solid var(--line-dark);border-radius:10px;
   padding:14px 16px;color:#fff;font-family:var(--ff-body);font-size:14.5px;transition:border-color .3s,background .3s;
 }
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--blue-500);background:rgba(255,255,255,.05);}
+.field select{
+  appearance:none;padding-right:44px;
+  background-image:linear-gradient(45deg,transparent 50%,#8b98c4 50%),linear-gradient(135deg,#8b98c4 50%,transparent 50%);
+  background-position:calc(100% - 21px) 50%,calc(100% - 15px) 50%;background-size:6px 6px;background-repeat:no-repeat;
+}
+.field select option{background:#0a1230;color:#fff;}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--blue-500);background-color:rgba(255,255,255,.05);}
 .field textarea{resize:vertical;min-height:110px;}
 .field ::placeholder{color:#5a6392;}
 .submit-btn{width:100%;justify-content:center;}
@@ -591,7 +623,8 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   .why-wrap{grid-template-columns:1fr;gap:50px;}
   .founders-grid{grid-template-columns:1fr;}
   .contact-grid{grid-template-columns:1fr;gap:50px;}
-  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .service-posters{gap:24px;max-width:760px;}
+  .service-poster{flex-basis:calc((100% - 48px)/3);}
   .process-track{grid-template-columns:repeat(2,1fr);row-gap:40px;}
   .process-track::before{display:none;}
   .industries-head{align-items:flex-start;}
@@ -613,7 +646,9 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
   .burger span:nth-child(2){top:7px;}
   .burger span:nth-child(3){top:14px;}
   .section{padding:80px 0;}
-  .services-grid,.stat-card-grid{grid-template-columns:1fr;}
+  .stat-card-grid{grid-template-columns:1fr;}
+  .service-posters{gap:22px;max-width:340px;}
+  .service-poster{flex-basis:100%;}
   .stat-card.blue{grid-column:span 1;}
   .process-track{grid-template-columns:1fr;}
   .industries-head{gap:24px;margin-bottom:30px;}
@@ -743,185 +778,52 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
       <p>From first click to closed sale — we handle strategy, creative, and performance so you don't have to juggle five agencies.</p>
     </div>
 
-    <div class="services-grid">
-      <!-- 01 Website Design & Dev -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-            <line x1="8" y1="21" x2="16" y2="21"/>
-            <line x1="12" y1="17" x2="12" y2="21"/>
-            <path d="M9 8l-2 2 2 2"/>
-            <path d="M15 8l2-2-2 2"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Website Design &amp; Development</h3>
-      </div>
-
-      <!-- 02 Search Engine Optimisation -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="10" cy="10" r="7"/>
-            <line x1="21" y1="21" x2="15" y2="15"/>
-            <polyline points="7 11 9 9 11 11 13 8"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Search Engine Optimisation</h3>
-      </div>
-
-      <!-- 03 Social Media Marketing -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"/>
-            <circle cx="6" cy="12" r="3"/>
-            <circle cx="18" cy="19" r="3"/>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Social Media Marketing</h3>
-      </div>
-
-      <!-- 04 Meta Ads -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <circle cx="12" cy="12" r="6"/>
-            <circle cx="12" cy="12" r="2"/>
-            <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Meta Ads</h3>
-      </div>
-
-      <!-- 05 Google Ads (PPC) -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-            <path d="M13 13l6 6"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Google Ads (PPC)</h3>
-      </div>
-
-      <!-- 06 Lead Generation Campaigns -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Lead Generation Campaigns</h3>
-      </div>
-
-      <!-- 07 Branding & Creative Design -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 5.5 16.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5228 6.47715 22 12 22Z"/>
-            <circle cx="7.5" cy="10.5" r="1.5"/>
-            <circle cx="11.5" cy="7.5" r="1.5"/>
-            <circle cx="16.5" cy="9.5" r="1.5"/>
-            <circle cx="15.5" cy="14.5" r="1.5"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Branding &amp; Creative Design</h3>
-      </div>
-
-      <!-- 08 Content Creation -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-            <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Content Creation</h3>
-      </div>
-
-      <!-- 09 Video Production & Editing -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M23 7l-7 5 7 5V7z"/>
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Video Production &amp; Editing</h3>
-      </div>
-
-      <!-- 10 Influencer Marketing -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-            <circle cx="9" cy="7" r="4"/>
-            <polygon points="19 2 20.2 4.5 22.8 4.9 20.9 6.8 21.3 9.4 19 8.2 16.7 9.4 17.1 6.8 15.2 4.9 17.8 4.5 19 2"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Influencer Marketing</h3>
-      </div>
-
-      <!-- 11 Email & WhatsApp Marketing -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="14" height="10" rx="2" ry="2"/>
-            <path d="M2 6l7 4 7-4"/>
-            <path d="M19 10h1a2 2 0 0 1 2 2v6l-3-3h-4a2 2 0 0 1-2-2v-1"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Email &amp; WhatsApp Marketing</h3>
-      </div>
-
-      <!-- 12 E-commerce Marketing -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="9" cy="21" r="1"/>
-            <circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">E-commerce Marketing</h3>
-      </div>
-
-      <!-- 13 Local SEO -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Local SEO</h3>
-      </div>
-
-      <!-- 14 Marketing Consultation -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Marketing Consultation</h3>
-      </div>
-
-      <!-- 15 Affordable Packages -->
-      <div class="service-card reveal">
-        <div class="svc-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-            <line x1="7" y1="7" x2="7.01" y2="7"/>
-          </svg>
-        </div>
-        <h3 class="svc-title">Affordable Packages</h3>
-      </div>
+    <div class="service-posters" aria-label="Akshu Medias service posters">
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/web design and development.png" alt="Website Design and Development" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/seo.png" alt="Search Engine Optimisation" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/smm.png" alt="Social Media Marketing" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/meta.png" alt="Meta Ads" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/ppc.png" alt="Google Ads PPC" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/lgc.png" alt="Lead Generation Campaigns" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/bcd.png" alt="Branding and Creative Design" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/cc.png" alt="Content Creation" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/vp.png" alt="Video Production and Editing" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/im.png" alt="Influencer Marketing" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/ewm.png" alt="Email and WhatsApp Marketing" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/ecm.png" alt="E-commerce Marketing" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/lseo.png" alt="Local SEO" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/mkc.png" alt="Marketing Consultation" loading="lazy" decoding="async">
+      </article>
+      <article class="service-poster reveal">
+        <img src="src/assets/servise_posters/ap.png" alt="Affordable Packages" loading="lazy" decoding="async">
+      </article>
     </div>
   </div>
 </section>
@@ -1038,7 +940,7 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
         </div>
       </div>
 
-      <div class="industry-card" data-cat="local"><div class="index">01</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 9h4l1.5-3 2 6 1.5-3h5"/></svg></div><div class="industry-copy"><h3>Healthcare</h3><p>Trust-first messaging</p></div></div>
+      <div class="industry-card healthcare-card" data-cat="local"><div class="index">01</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.5 9h4l1.5-3 2 6 1.5-3h5"/></svg></div><div class="industry-copy"><h3>Healthcare</h3><p>Trust-first messaging</p></div></div>
       <div class="industry-card" data-cat="local d2c"><div class="index">02</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div><div class="industry-copy"><h3>Education</h3><p>Enrollment funnels</p></div></div>
       <div class="industry-card wide" data-cat="local b2b"><div class="index">03</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21V13h6v8"/></svg></div><div class="industry-copy"><h3>Real Estate</h3><p>Listings that convert leads, not just views</p></div></div>
       <div class="industry-card" data-cat="d2c digital"><div class="index">04</div><div class="industry-icon"><svg viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23Z"/></svg></div><div class="industry-copy"><h3>Fashion &amp; Apparel</h3><p>Drop-driven hype</p></div></div>
@@ -1102,6 +1004,25 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
             <div class="field"><label>Phone</label><input type="tel" id="phone" placeholder="+91" required></div>
           </div>
           <div class="field"><label>Email</label><input type="email" id="email" placeholder="you@company.com" required></div>
+          <div class="field">
+            <label>Industry type</label>
+            <select id="industryType" required>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Education">Education</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Fashion &amp; Apparel">Fashion &amp; Apparel</option>
+              <option value="Beauty &amp; Cosmetics">Beauty &amp; Cosmetics</option>
+              <option value="Restaurants &amp; Cafes">Restaurants &amp; Cafes</option>
+              <option value="Construction">Construction</option>
+              <option value="Manufacturing">Manufacturing</option>
+              <option value="Finance">Finance</option>
+              <option value="Travel &amp; Tourism">Travel &amp; Tourism</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="Personal Brands">Personal Brands</option>
+              <option value="Startups">Startups</option>
+              <option value="Small &amp; Medium Businesses">Small &amp; Medium Businesses</option>
+            </select>
+          </div>
           <div class="field"><label>Tell us about your business &amp; goals</label><textarea id="message" placeholder="What are you looking to grow?" required></textarea></div>
           <button class="btn-primary submit-btn" type="submit">
             <span id="buttonText">Send Message</span>
@@ -1301,10 +1222,27 @@ function loopCursor(){
   requestAnimationFrame(loopCursor);
 }
 loopCursor();
-document.querySelectorAll('a,button,.industry-card,.service-card,.pricing-card,.pricing-btn').forEach(el=>{
+document.querySelectorAll('a,button,.industry-card,.service-poster,.pricing-card,.pricing-btn').forEach(el=>{
   el.addEventListener('mouseenter',()=>ring.classList.add('active'));
   el.addEventListener('mouseleave',()=>ring.classList.remove('active'));
 });
+
+// ---------- Service poster motion ----------
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  document.querySelectorAll('.service-poster').forEach(poster=>{
+    poster.addEventListener('mousemove',e=>{
+      const rect=poster.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width-.5;
+      const y=(e.clientY-rect.top)/rect.height-.5;
+      poster.style.setProperty('--tilt-x', `${(-y*7).toFixed(2)}deg`);
+      poster.style.setProperty('--tilt-y', `${(x*7).toFixed(2)}deg`);
+    });
+    poster.addEventListener('mouseleave',()=>{
+      poster.style.setProperty('--tilt-x', '0deg');
+      poster.style.setProperty('--tilt-y', '0deg');
+    });
+  });
+}
 
 // ---------- Pricing Plan Selector Helper ----------
 function selectPricingPlan(planName) {
@@ -1390,6 +1328,34 @@ if(industryCounter&&industryHero){
 
 const industryChips=document.querySelectorAll('.industry-chip');
 const filteredIndustryCards=document.querySelectorAll('.industry-card:not(.hero)');
+
+function sendIndustryToContact(card){
+  const industryName=card.querySelector('.industry-copy h3')?.textContent.trim();
+  const industrySelect=document.getElementById('industryType');
+  const contactSection=document.getElementById('contact');
+  if(industryName&&industrySelect){
+    industrySelect.value=industryName;
+  }
+  if(contactSection){
+    contactSection.scrollIntoView({behavior:'smooth'});
+    history.replaceState(null,'','#contact');
+  }
+}
+
+filteredIndustryCards.forEach(card=>{
+  const industryName=card.querySelector('.industry-copy h3')?.textContent.trim();
+  card.setAttribute('role','button');
+  card.setAttribute('tabindex','0');
+  if(industryName) card.setAttribute('aria-label',`Select ${industryName} industry and open contact form`);
+  card.addEventListener('click',()=>sendIndustryToContact(card));
+  card.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      sendIndustryToContact(card);
+    }
+  });
+});
+
 industryChips.forEach(chip=>{
   chip.addEventListener('click',()=>{
     industryChips.forEach(item=>{
@@ -1441,12 +1407,13 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   const fullName = document.getElementById('fullName').value.trim();
   const email = document.getElementById('email').value.trim();
   const phone = document.getElementById('phone').value.trim();
+  const industryType = document.getElementById('industryType').value.trim();
   const message = document.getElementById('message').value.trim();
   const statusMessage = document.getElementById('statusMessage');
   const buttonText = document.getElementById('buttonText');
   const submitBtn = document.querySelector('.submit-btn');
 
-  if (!fullName || !email || !phone || !message) {
+  if (!fullName || !email || !phone || !industryType || !message) {
     showStatus('Please fill in all fields', 'error');
     return;
   }
@@ -1465,6 +1432,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
         name: fullName,
         email: email,
         phone: phone,
+        industry: industryType,
         message: message,
       }),
     });
