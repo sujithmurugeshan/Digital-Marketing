@@ -443,6 +443,50 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
 .socials{display:flex;gap:12px;}
 .socials a{width:38px;height:38px;border-radius:50%;border:1px solid var(--line-dark);display:flex;align-items:center;justify-content:center;transition:all .3s var(--ease);}
 .socials a:hover{background:var(--blue-600);border-color:var(--blue-600);transform:translateY(-3px);}
+
+/* ============ FLOATING SOCIAL ACTIONS ============ */
+.floating-social{
+  position:fixed;right:24px;bottom:24px;z-index:980;
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  border:4px solid rgba(255,255,255,.14);
+  box-shadow:0 14px 34px rgba(0,0,0,.32);
+  transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease);
+}
+.floating-social:hover,.floating-social:focus-visible{
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 18px 42px rgba(0,0,0,.38);
+}
+.floating-social:focus-visible{outline:2px solid #fff;outline-offset:4px;}
+.floating-social svg{width:32px;height:32px;}
+.whatsapp-float{
+  color:#062414;background:#25d366;
+  box-shadow:0 14px 34px rgba(0,0,0,.32),0 0 0 8px rgba(37,211,102,.18);
+}
+.whatsapp-float:hover,.whatsapp-float:focus-visible{
+  background:#2ee574;
+  box-shadow:0 18px 42px rgba(0,0,0,.38),0 0 0 10px rgba(37,211,102,.2);
+}
+.instagram-float{
+  bottom:104px;color:#fff;
+  border:0;
+  background:
+    radial-gradient(circle at 28% 108%, #feda75 0 24%, #fa7e1e 38%, #d62976 58%, #962fbf 78%, #4f5bd5 100%);
+  box-shadow:0 14px 34px rgba(0,0,0,.32),0 0 0 8px rgba(214,41,118,.16);
+}
+.instagram-float::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,0) 54%);
+  pointer-events:none;
+}
+.instagram-float svg{
+  position:relative;z-index:1;width:40px;height:40px;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.22));
+}
+.instagram-float:hover,.instagram-float:focus-visible{
+  box-shadow:0 18px 42px rgba(0,0,0,.38),0 0 0 10px rgba(214,41,118,.2);
+}
 /* ============ PRICING ============ */
 .pricing-head {
   text-align: center;
@@ -1190,13 +1234,38 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
     <div class="footer-bottom">
       <p>© 2026 Akshu Medias. All rights reserved.</p>
       <div class="socials">
-        <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
-        <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-        <a href="#" aria-label="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V8h4v1.5A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a href="https://www.instagram.com/akshumedias?igsh=bjh5MXdveWk2MGxu" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
       </div>
     </div>
   </div>
 </footer>
+
+<a
+  class="floating-social instagram-float"
+  href="https://www.instagram.com/akshumedias?igsh=bjh5MXdveWk2MGxu"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Open Akshu Medias on Instagram"
+>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="5"/>
+    <circle cx="12" cy="12" r="4.25"/>
+    <circle cx="17.35" cy="6.65" r="1.15" fill="currentColor" stroke="none"/>
+  </svg>
+</a>
+
+<a
+  class="floating-social whatsapp-float"
+  href="https://wa.me/919994627016?text=Hi%2C%20I%20want%20to%20know%20more%20about%20your%20services."
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+>
+  <svg viewBox="0 0 32 32" aria-hidden="true" fill="none">
+    <path d="M16 4.25c-6.49 0-11.75 5.06-11.75 11.31 0 2.14.62 4.14 1.69 5.84l-1.12 5.35 5.57-1.25a12.15 12.15 0 0 0 5.61 1.38c6.49 0 11.75-5.06 11.75-11.31S22.49 4.25 16 4.25Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M11.65 10.8c.28-.55.56-.56.82-.56h.6c.2 0 .52.08.8.38.28.3 1.05 1.02 1.05 2.48 0 1.47-1.08 2.88-1.23 3.08-.15.2-.22.38-.07.68.15.3.68 1.12 1.47 1.82 1.01.89 1.86 1.17 2.16 1.3.3.15.48.13.66-.07.2-.22.76-.88.97-1.18.2-.3.4-.25.68-.15.28.1 1.78.82 2.08.97.3.15.5.22.58.35.08.13.08.77-.18 1.5-.25.73-1.48 1.4-2.04 1.45-.53.05-1.2.08-1.94-.12-.45-.12-1.03-.33-1.77-.65-3.12-1.31-5.15-4.38-5.31-4.58-.15-.2-1.27-1.66-1.27-3.17 0-1.52.82-2.27 1.12-2.58.3-.32.65-.95.85-.95Z" fill="currentColor"/>
+  </svg>
+</a>
 
 <script>
 // ---------- Preloader ----------
