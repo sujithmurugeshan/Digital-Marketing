@@ -1666,6 +1666,11 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   }
 
   function getContactApiUrl() {
+    const configuredApiUrl = '%VITE_CONTACT_API_URL%'.trim();
+    if (configuredApiUrl && !configuredApiUrl.includes('VITE_CONTACT_API_URL')) {
+      return configuredApiUrl;
+    }
+
     const localDevPorts = ['3000', '5173', '5174'];
     const isLocalDevHost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
     const needsLocalBackend = window.location.protocol === 'file:' || (isLocalDevHost && localDevPorts.includes(window.location.port));
