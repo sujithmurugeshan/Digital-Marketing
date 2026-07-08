@@ -1172,6 +1172,7 @@ footer{border-top:1px solid var(--line-dark);padding:70px 0 30px;}
 
       <div class="form-card reveal reveal-delay-2">
         <form id="contactForm">
+          <input type="checkbox" id="botcheck" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
           <div class="form-row">
             <div class="field"><label>Full name</label><input type="text" id="fullName" placeholder="Your name" required></div>
             <div class="field"><label>Phone</label><input type="tel" id="phone" placeholder="+91" required></div>
@@ -1621,28 +1622,39 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   buttonText.textContent = 'Sending...';
 
   try {
-    const apiUrl = getContactApiUrl();
-    const response = await fetch(apiUrl, {
+    const accessKey = getWeb3FormsAccessKey();
+
+    if (!accessKey) {
+      showStatus('Web3Forms access key is missing. Add VITE_WEB3FORMS_ACCESS_KEY to your frontend environment.', 'error');
+      return;
+    }
+
+    const response = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: JSON.stringify({
+        access_key: accessKey,
+        subject: 'New contact form submission from Akshu Medias',
+        from_name: 'Akshu Medias Website',
         name: fullName,
         email: email,
         phone: phone,
         industry: industryType,
         message: message,
+        botcheck: document.getElementById('botcheck').checked,
       }),
     });
 
     const data = await response.json().catch(() => ({
       success: false,
-      message: 'Server returned an invalid response. Please check the backend logs.',
+      message: 'Web3Forms returned an invalid response. Please try again.',
     }));
 
     if (response.ok && data.success) {
-      showStatus('✅ ' + data.message, 'success');
+      showStatus('Message sent successfully. We will contact you shortly!', 'success');
       document.getElementById('contactForm').reset();
       setTimeout(() => {
         statusMessage.style.display = 'none';
@@ -1652,7 +1664,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error('Error:', error);
-    showStatus('❌ Network error. Make sure the backend is running at http://localhost:3001, then refresh this page.', 'error');
+    showStatus('Could not send your message. Please check your connection and try again.', 'error');
   } finally {
     submitBtn.disabled = false;
     buttonText.textContent = 'Send Message';
@@ -1665,17 +1677,12 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     statusMessage.style.fontWeight = '500';
   }
 
-  function getContactApiUrl() {
-    const configuredApiUrl = '%VITE_CONTACT_API_URL%'.trim();
-    if (configuredApiUrl && !configuredApiUrl.includes('VITE_CONTACT_API_URL')) {
-      return configuredApiUrl;
+  function getWeb3FormsAccessKey() {
+    const accessKey = '%VITE_WEB3FORMS_ACCESS_KEY%'.trim();
+    if (accessKey && !accessKey.includes('VITE_WEB3FORMS_ACCESS_KEY')) {
+      return accessKey;
     }
-
-    const localDevPorts = ['3000', '5173', '5174'];
-    const isLocalDevHost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
-    const needsLocalBackend = window.location.protocol === 'file:' || (isLocalDevHost && localDevPorts.includes(window.location.port));
-
-    return needsLocalBackend ? 'http://localhost:3001/api/contact' : '/api/contact';
+    return '';
   }
 });
 </script>

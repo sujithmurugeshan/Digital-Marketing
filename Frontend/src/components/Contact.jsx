@@ -1,12 +1,56 @@
 import { useState } from 'react';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
-function Contact() {
-  const [submitted, setSubmitted] = useState(false);
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
 
-  const handleSubmit = (event) => {
+function Contact() {
+  const [status, setStatus] = useState({ type: '', message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setSubmitted(true);
+    setStatus({ type: '', message: '' });
+
+    if (!WEB3FORMS_ACCESS_KEY) {
+      setStatus({
+        type: 'error',
+        message: 'Web3Forms access key is missing. Add VITE_WEB3FORMS_ACCESS_KEY to your frontend environment.',
+      });
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    formData.append('access_key', WEB3FORMS_ACCESS_KEY);
+    formData.append('subject', 'New strategy call request from Akshu Medias');
+    formData.append('from_name', 'Akshu Medias Website');
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(WEB3FORMS_ENDPOINT, {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        event.currentTarget.reset();
+        setStatus({ type: 'success', message: 'Thanks. Your request has been sent.' });
+      } else {
+        setStatus({
+          type: 'error',
+          message: result.message || 'Something went wrong. Please try again.',
+        });
+      }
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: 'Could not send your request. Please check your connection and try again.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,6 +81,7 @@ function Contact() {
         </div>
 
         <form className="contact-form" onSubmit={handleSubmit}>
+          <input type="checkbox" name="botcheck" className="hidden" tabIndex="-1" autoComplete="off" />
           <label>
             Name
             <input type="text" name="name" placeholder="Your name" required />
@@ -63,13 +108,13 @@ function Contact() {
           </label>
 
           <button className="button button-primary form-button" type="submit">
-            Request a strategy call
+            {isSubmitting ? 'Sending...' : 'Request a strategy call'}
             <ArrowRight size={18} />
           </button>
 
-          {submitted ? (
-            <p className="form-status" role="status">
-              Thanks. Your request is ready to connect to a backend or email service.
+          {status.message ? (
+            <p className={`form-status ${status.type}`} role="status">
+              {status.message}
             </p>
           ) : null}
         </form>
