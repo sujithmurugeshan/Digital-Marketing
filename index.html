@@ -1621,7 +1621,8 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
   buttonText.textContent = 'Sending...';
 
   try {
-    const response = await fetch('http://localhost:3001/api/contact', {
+    const apiUrl = getContactApiUrl();
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1635,7 +1636,10 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
       }),
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => ({
+      success: false,
+      message: 'Server returned an invalid response. Please check the backend logs.',
+    }));
 
     if (response.ok && data.success) {
       showStatus('✅ ' + data.message, 'success');
@@ -1648,7 +1652,7 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error('Error:', error);
-    showStatus('❌ Network error. Make sure the server is running on port 3001', 'error');
+    showStatus('❌ Network error. Make sure the backend is running at http://localhost:3001, then refresh this page.', 'error');
   } finally {
     submitBtn.disabled = false;
     buttonText.textContent = 'Send Message';
@@ -1659,6 +1663,14 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     statusMessage.style.display = 'block';
     statusMessage.style.color = type === 'success' ? '#3766ff' : '#ff4d4d';
     statusMessage.style.fontWeight = '500';
+  }
+
+  function getContactApiUrl() {
+    const localDevPorts = ['3000', '5173', '5174'];
+    const isLocalDevHost = ['localhost', '127.0.0.1', ''].includes(window.location.hostname);
+    const needsLocalBackend = window.location.protocol === 'file:' || (isLocalDevHost && localDevPorts.includes(window.location.port));
+
+    return needsLocalBackend ? 'http://localhost:3001/api/contact' : '/api/contact';
   }
 });
 </script>
